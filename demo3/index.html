@@ -5,33 +5,27 @@
 	<title>Websocket</title>
 </head>
 <body>
-	<h1>Chat Room</h1>
+	<h1>Echo Test</h1>
 	<input id="sendTxt" type="text">
 	<button id="sendBtn">发送</button>
+	<div id="recv"></div>
 	<script type="text/javascript">
 		var websocket = new WebSocket("ws://localhost:3000/");
-		function showMessage(str){
-			var div = document.createElement('div');
-			div.innerHTML = str;
-			document.body.appendChild(div);
-		}
 		websocket.onopen = function(){
 			console.log('websocket open');
-			document.getElementById("sendBtn").onclick = function(){
-				var txt = document.getElementById("sendTxt").value;
-				if(txt){
-					websocket.send(txt);
-				}	
-			}
+			document.getElementById("recv").innerHTML = "Connected";
 		}
 		websocket.onclose = function(){
 			console.log('websocket close');
 		}
 		websocket.onmessage = function(e){
 			console.log(e.data);
-			showMessage(e.data);
+			document.getElementById("recv").innerHTML = e.data;
 		}
-		
+		document.getElementById("sendBtn").onclick = function(){
+			var txt = document.getElementById("sendTxt").value;
+			websocket.send(txt);
+		}
 	</script>
 </body>
 </html>
